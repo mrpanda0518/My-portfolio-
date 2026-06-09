@@ -11,17 +11,25 @@ app = Flask(__name__)
 # Enable CORS for frontend API consumption
 CORS(app, resources={r"/api/*": {"origins": "*"}})
 
-# Extract DB configs from env
-DB_USER = os.getenv('DB_USER', 'root')
-DB_PASSWORD = os.getenv('DB_PASSWORD', '')
-DB_HOST = os.getenv('DB_HOST', '127.0.0.1')
-DB_PORT = os.getenv('DB_PORT', '3306')
-DB_NAME = os.getenv('DB_NAME', 'portfolio_db')
+# Database connection configuration (Checks DATABASE_URL first, fallbacks to individual variables)
+DATABASE_URL = os.getenv('DATABASE_URL')
 
-# Build connection string
-# Format: mysql+pymysql://user:password@host:port/database
-db_password_clause = f":{DB_PASSWORD}" if DB_PASSWORD else ""
-DATABASE_URL = f"mysql+pymysql://{DB_USER}{db_password_clause}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+if DATABASE_URL:
+    # Standardize connection string prefixes for SQLAlchemy compatibility
+    if DATABASE_URL.startswith('postgres://'):
+        DATABASE_URL = DATABASE_URL.replace('postgres://', 'postgresql+psycopg2://', 1)
+    elif DATABASE_URL.startswith('postgresql://'):
+        DATABASE_URL = DATABASE_URL.replace('postgresql://', 'postgresql+psycopg2://', 1)
+    elif DATABASE_URL.startswith('mysql://'):
+        DATABASE_URL = DATABASE_URL.replace('mysql://', 'mysql+pymysql://', 1)
+else:
+    DB_USER = os.getenv('DB_USER', 'root')
+    DB_PASSWORD = os.getenv('DB_PASSWORD', '')
+    DB_HOST = os.getenv('DB_HOST', '127.0.0.1')
+    DB_PORT = os.getenv('DB_PORT', '3306')
+    DB_NAME = os.getenv('DB_NAME', 'portfolio_db')
+    db_password_clause = f":{DB_PASSWORD}" if DB_PASSWORD else ""
+    DATABASE_URL = f"mysql+pymysql://{DB_USER}{db_password_clause}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 
 app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False

@@ -113,5 +113,18 @@ def seed_database():
         print("Database schema initialization and seed process completed successfully!")
 
 if __name__ == '__main__':
-    if create_database():
+    # If a database connection string is provided, skip root server connection and seed directly.
+    if os.getenv('DATABASE_URL'):
+        print("DATABASE_URL detected. Skipping database creation step and running seed/migration directly...")
         seed_database()
+    else:
+        # Local configuration flow
+        if create_database():
+            seed_database()
+        else:
+            print("Database creation failed or was skipped. Attempting to seed tables anyway...")
+            try:
+                seed_database()
+            except Exception as err:
+                print(f"Error seeding database: {err}")
+
