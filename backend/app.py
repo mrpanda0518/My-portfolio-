@@ -36,6 +36,18 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
 
+@app.route('/', methods=['GET'])
+def index():
+    return jsonify({
+        'message': "Welcome to Sai Pravardhan Reddy Estati's Portfolio API Server",
+        'status': 'healthy',
+        'endpoints': {
+            'health': '/api/health',
+            'skills': '/api/skills',
+            'projects': '/api/projects'
+        }
+    }), 200
+
 # Test db connection status route
 @app.route('/api/health', methods=['GET'])
 def health_check():
