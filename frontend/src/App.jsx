@@ -300,7 +300,7 @@ function App() {
       <header className={isScrolled ? 'scrolled' : ''}>
         <div className="container nav-container">
           <a href="#hero" className="logo" onClick={() => setMobileMenuOpen(false)}>
-            <span className="gradient-text">&lt;/&gt; Sai</span><span>.Dev</span>
+            <span className="gradient-text">AI </span><span>full stack</span>
           </a>
           
           <nav className={`nav-links ${mobileMenuOpen ? 'active' : ''}`}>
@@ -337,7 +337,7 @@ function App() {
       <section id="hero" className="hero section">
         <div className="container hero-grid">
           <div className="hero-content">
-            <p className="hero-greeting">Hello World, I'm</p>
+            <p className="hero-greeting">Hello everyone, I'm</p>
             <h1 className="hero-name">Sai Pravardhan Reddy Estati</h1>
             <h2 className="hero-title">
               <span>I'm a </span>
@@ -663,7 +663,7 @@ function App() {
       <footer>
         <div className="container footer-content">
           <div className="footer-logo">
-            <span className="gradient-text">&lt;/&gt; Sai</span><span>.Dev</span>
+            <span className="gradient-text">AI </span><span>full stack</span>
           </div>
           
           <div className="footer-nav">
